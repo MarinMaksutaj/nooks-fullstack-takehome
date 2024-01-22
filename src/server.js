@@ -38,15 +38,14 @@ app.post('/api/createSession', (req, res) => {
     console.log(req.body);
     const sessionId = req.body.sessionId;
     const youtubeLink = req.body.youtubeVidUrl;
-    watchPartyDatabase[sessionId] = { ...watchPartyObj, youtubeLink };
-    watchPartyDatabase[sessionId].sessionId = sessionId;
+    watchPartyDatabase[sessionId] = { ...watchPartyObj, youtubeLink, sessionId };
     // insert into the database using the sessionId as the key
-    db.collection('watchParty').insertOne({ sessionId, ...watchPartyObj, youtubeLink }, (err, result) => {
+    db.collection('watchParty').insertOne({ ...watchPartyObj, youtubeLink, sessionId }, (err, result) => {
         if (err) {
             console.log(err);
             res.send(false);
         } else {
-            console.log('Inserted new watch party object into database');
+            console.log('Inserted new watch party object into database: ', watchPartyDatabase[sessionId]);
             res.send(true);
         }
     });
@@ -69,6 +68,7 @@ app.get('/api/session/:sessionId', (req, res) => {
                 watchPartyDatabase[sessionId] = result;
                 res.json(result);
             } else {
+                console.log('session not found on database ' + sessionId);
                 res.send(false);
             }
         });
@@ -132,7 +132,7 @@ wss.on('connection', (ws) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log('Updated watch party object in database');
+                console.log('Updated watch party object in database: ', watchPartyDatabase[sessionId]);
             }
         });
 
