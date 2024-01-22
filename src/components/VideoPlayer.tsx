@@ -37,33 +37,34 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, hideControls, sessionId 
         } else {
           setIsReady(true);
         }
-      } else if (data.action === "PLAY" && clientId.current !== data.clientId) {
+      } else if (data.action === "PLAY" && clientId.current !== data.clientId && data.watchParty.sessionId === sessionId) {
         // only seek if the timestamp is different by more than 2 seconds
         if (player.current && data.watchParty.timestamp && Math.abs(player.current.getCurrentTime() - data.watchParty.timestamp) > 2) {
           player.current?.seekTo(data.watchParty.timestamp);
         }
         setIsReady(true);
-      } else if (data.action === "PAUSE" && clientId.current !== data.clientId) {
+      } else if (data.action === "PAUSE" && clientId.current !== data.clientId && data.watchParty.sessionId === sessionId) {
         // pause video
         if (player.current && data.watchParty.timestamp && Math.abs(player.current.getCurrentTime() - data.watchParty.timestamp) > 2) {
           player.current?.seekTo(data.watchParty.timestamp);
         }
         setIsReady(false);
-      } else if (data.action === "BUFFER" && clientId.current !== data.clientId) {
+      } else if (data.action === "BUFFER" && clientId.current !== data.clientId && data.watchParty.sessionId === sessionId) {
         // buffer video
         if (player.current && data.watchParty.timestamp && Math.abs(player.current.getCurrentTime() - data.watchParty.timestamp) > 2) {
           player.current?.seekTo(data.watchParty.timestamp);
         }
         setIsBuffering(true);
-      } else if (data.action === "SEEK" && clientId.current !== data.clientId) {
+      } else if (data.action === "SEEK" && clientId.current !== data.clientId && data.watchParty.sessionId === sessionId) {
         // seek video
         if (player.current && data.watchParty.timestamp && Math.abs(player.current.getCurrentTime() - data.watchParty.timestamp) > 2) {
           player.current?.seekTo(data.watchParty.timestamp);
           setLastPlayedSeconds(data.watchParty.timestamp);
         }
-      } else if (data.action === "END") {
+      } else if (data.action === "END" && data.watchParty.sessionId === sessionId) {
         console.log("Received end message");
-        // end video
+        // end video NOTE: nothing for now since it was not a requirement in the project description but we could easily add some 
+        // functionality in regards to the video ending as well.
       }
 
     }

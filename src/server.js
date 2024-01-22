@@ -25,6 +25,7 @@ const watchPartyObj = {
     timestamp: 0,
     timeOfLastUpdate: 0,
     isPlaying: false,
+    sessionId: ''
 };
 
 // Serve static files from the React app
@@ -38,6 +39,7 @@ app.post('/api/createSession', (req, res) => {
     const sessionId = req.body.sessionId;
     const youtubeLink = req.body.youtubeVidUrl;
     watchPartyDatabase[sessionId] = { ...watchPartyObj, youtubeLink };
+    watchPartyDatabase[sessionId].sessionId = sessionId;
     // insert into the database using the sessionId as the key
     db.collection('watchParty').insertOne({ sessionId, ...watchPartyObj, youtubeLink }, (err, result) => {
         if (err) {
