@@ -9,6 +9,8 @@ We want to respect your time, so please try not to spend more than 5 hours on th
 
 ### Instructions
 
+Video demo: https://www.youtube.com/watch?v=gPznf1ZyNoE
+
 To run the app simply "npm i" and then "npm start"
 
 Before running you need to make sure to set these environment variables:
