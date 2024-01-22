@@ -14,10 +14,23 @@ const WatchSession: React.FC = () => {
 
   useEffect(() => {
     // load video by session ID -- right now we just hardcode a constant video but you should be able to load the video associated with the session
-    setUrl("https://www.youtube.com/watch?v=NX1eKLReSpY");
+    console.log("Loading video for session: ", sessionId);
+    fetch(`/api/session/${sessionId}`)
+      .then(response => response.json())
+      .then(data => {
+        // Replace 'youtubeLink' with the actual property name
+        if (data && data.youtubeLink) {
+          setUrl(data.youtubeLink);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Redirect back to the home / create session page if there's an error
+        navigate('/');
+      });
 
     // if session ID doesn't exist, you'll probably want to redirect back to the home / create session page
-  }, [sessionId]);
+  }, [sessionId, navigate]);
 
   if (!!url) {
     return (
@@ -66,7 +79,7 @@ const WatchSession: React.FC = () => {
             </Button>
           </Tooltip>
         </Box>
-        <VideoPlayer url={url} />;
+        {url && sessionId && <VideoPlayer url={url} sessionId={sessionId} />}
       </>
     );
   }

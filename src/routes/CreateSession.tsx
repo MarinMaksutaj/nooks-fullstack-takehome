@@ -8,9 +8,31 @@ const CreateSession: React.FC = () => {
   const [newUrl, setNewUrl] = useState("");
 
   const createSession = async () => {
+    const youtubeVidUrl = newUrl;
     setNewUrl("");
     const sessionId = uuidv4();
-    navigate(`/watch/${sessionId}`);
+    // send youtubeVidUrl and sessionId to backend
+    // we'll get true if the session was created successfully
+    fetch('/api/createSession', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ youtubeVidUrl, sessionId }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data) {
+        console.log('Success:', data);
+        navigate(`/watch/${sessionId}`);
+      } else {
+        console.log('Error creating session');
+      }
+    }
+    )
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   };
 
   return (
