@@ -183,6 +183,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, hideControls, sessionId 
           variant="contained"
           size="large"
           onClick={() => {
+            setIsReady(false);
             setHasJoined(true);
             ws.current?.send(JSON.stringify({ action: "INITIALIZE", timestamp: player.current?.getCurrentTime(), sessionId: sessionId }));
           }
