@@ -18,7 +18,8 @@ Before running you need to make sure to set these environment variables:
 - MONGODB_URI: the uri to your MongoDB database
 - WS_PORT: the port that the websocket server will run on
 - HTTP_PORT: the port that the http server will run on
-- REACT_APP_WS_PORT: the port that the websocket client will connect to
+- REACT_APP_WS_PORT: the port that the websocket client will connect to 
+(the react app side)
 
 
 ### Problem
